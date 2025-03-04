@@ -3,12 +3,18 @@
  * Use table category, film_category, and film.
  */
 
-CREATE OR REPLACE FUNCTION list_category(TEXT) RETURNS TABLE(title TEXT) AS
+CREATE OR REPLACE FUNCTION list_category(cat TEXT) RETURNS TABLE(title TEXT) AS
 $$
--- FIXME: implementation goes here
+SELECT f.title
+FROM film f
+JOIN film_category fc ON f.film_id = fc.film_id
+JOIN category c ON fc.category_id = c.category_id
+WHERE c.name = cat
+ORDER BY f.title
+
 $$
 LANGUAGE SQL
-IMMUTABLE
+STABLE
 RETURNS NULL ON NULL INPUT;
 
 SELECT list_category('Action');
